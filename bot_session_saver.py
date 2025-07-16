@@ -25,10 +25,10 @@ api_id = config["api_id"]
 api_hash = config["api_hash"]
 phone = config["phone"]
 
-BOT_SESSION = "bot"
+BOT = "bot"
 USER_SESSION = "anon"
 
-bot = TelegramClient(BOT_SESSION, api_id, api_hash).start(bot_token=bot_token)
+bot = TelegramClient(BOT, api_id, api_hash).start(bot_token=bot_token)
 anon = TelegramClient(USER_SESSION, api_id, api_hash)
 
 @bot.on(events.NewMessage(pattern="/start"))
