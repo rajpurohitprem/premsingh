@@ -1,0 +1,24 @@
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+venv/
+.env
+
+# Session & config files (important for Telegram login & privacy)
+anon.session
+config.json
+sent_ids.txt
+errors.txt
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Log or temporary files
+*.log
+*.tmp
