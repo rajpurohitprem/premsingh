@@ -11,6 +11,7 @@ venv/
 
 # Session & config files (important for Telegram login & privacy)
 anon.session
+bot.json
 bot.session
 config.json
 sent_ids.txt
