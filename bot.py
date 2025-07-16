@@ -25,29 +25,20 @@ anon = TelegramClient("anon", config["api_id"], config["api_hash"])
 async def start(event):
     await event.respond("🤖 Welcome! Use /set_source, /set_target, or /start_clone")
 
-@bot.on(events.NewMessage(pattern="/set_source (.+)"))
+@bot.on(events.NewMessage(pattern="/set_source (-100\d{10,})"))
 async def set_source(event):
-    username = event.pattern_match.group(1)
-    await anon.start()
-    try:
-        entity = await anon.get_entity(username)
-        config["source_channel_id"] = entity.id
-        save_json(config, CONFIG_FILE)
-        await event.respond(f"✅ Source channel set to: `{username}` (ID: {entity.id})")
-    except Exception as e:
-        await event.respond(f"❌ Error: {str(e)}")
+    channel_id = int(event.pattern_match.group(1))
+    config["source_channel_id"] = channel_id
+    save_json(config, CONFIG_FILE)
+    await event.respond(f"✅ Source channel ID set to: `{channel_id}`")
 
-@bot.on(events.NewMessage(pattern="/set_target (.+)"))
+@bot.on(events.NewMessage(pattern="/set_target (-100\d{10,})"))
 async def set_target(event):
-    username = event.pattern_match.group(1)
-    await anon.start()
-    try:
-        entity = await anon.get_entity(username)
-        config["target_channel_id"] = entity.id
-        save_json(config, CONFIG_FILE)
-        await event.respond(f"✅ Target channel set to: `{username}` (ID: {entity.id})")
-    except Exception as e:
-        await event.respond(f"❌ Error: {str(e)}")
+    channel_id = int(event.pattern_match.group(1))
+    config["target_channel_id"] = channel_id
+    save_json(config, CONFIG_FILE)
+    await event.respond(f"✅ Target channel ID set to: `{channel_id}`")
+
 
 @bot.on(events.NewMessage(pattern="/start_clone"))
 async def start_clone(event):
