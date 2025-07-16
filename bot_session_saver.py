@@ -84,6 +84,6 @@ async def logout_handler(event):
         cleanup_journals()
 
 import os; os.remove("anon.session_journal") if os.path.exists("anon.session_journal") else None
-
+import os; os.remove("bot.session_journal") if os.path.exists("bot.session_journal") else None
 print("🤖 Bot is running...")
 bot.run_until_disconnected()
