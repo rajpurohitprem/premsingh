@@ -1,5 +1,14 @@
 import json
 from telethon import TelegramClient, events
+import glob
+import os
+
+def cleanup_journals():
+    for file in glob.glob("*.session*journal"):
+        try:
+            os.remove(file)
+        except Exception as e:
+            print(f"Could not delete {file}: {e}")
 
 # Load bot token and allowed users
 with open("bot.json", "r") as f:
@@ -53,18 +62,23 @@ async def code_handler(event):
 
         await anon.sign_in(phone, digits)
         await event.reply("✅ Logged in. `anon.session` saved.")
+        cleanup_journals()
     except Exception as e:
         await event.reply(f"❌ Login failed: {e}")
+        cleanup_journals()
 
 @bot.on(events.NewMessage(pattern="/logout"))
 async def logout_handler(event):
     if event.sender_id not in allowed_users:
         return await event.reply("🚫 Not authorized.")
+        cleanup_journals()
     try:
         await anon.log_out()
         await event.reply("✅ Logged out.")
+        cleanup_journals()
     except Exception as e:
         await event.reply(f"❌ Logout error: {e}")
+        cleanup_journals()
 
 import os; os.remove("anon.session_journal") if os.path.exists("anon.session_journal") else None
 
