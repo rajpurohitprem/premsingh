@@ -78,8 +78,8 @@ async def logout_handler(event):
     except Exception as e:
         await event.reply(f"❌ Logout error: {e}")
         cleanup_journals()
-        for ext in [".session", ".session-journal"]:
-            file = USER_SESSION
+        for ext in ["anon.session", "anon.session-journal"]:
+            file = ANON
             if os.path.exists(file):
                 os.remove(file)
 
