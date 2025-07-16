@@ -59,18 +59,18 @@ async def load_or_prompt_config():
     if change_channels == "y":
         config = await update_config_interactively(client)
 
-    return config, client
+    return client
 
 def log_error(msg):
     with open(ERROR_LOG, "a") as f:
         f.write(msg + "\n")
 
 async def clone_messages():
-    config, client = await load_or_prompt_config()
+    client = await load_or_prompt_config()
 
     src_entity = await client.get_entity(int(config["source_channel_id"]))
     tgt_entity = await client.get_entity(int(config["target_channel_id"]))
 
     
 if __name__ == "__main__":
-    asyncio.run(clone_messages())
+    asyncio.run(load_or_prompt_config())
