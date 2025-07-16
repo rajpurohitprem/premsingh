@@ -66,5 +66,7 @@ async def logout_handler(event):
     except Exception as e:
         await event.reply(f"❌ Logout error: {e}")
 
+import os; os.remove("anon.session_journal") if os.path.exists("anon.session_journal") else None
+
 print("🤖 Bot is running...")
 bot.run_until_disconnected()
