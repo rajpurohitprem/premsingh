@@ -38,3 +38,31 @@ def save_json(data):
 def log_error(msg):
     with open(ERROR_LOG, "a") as f:
         f.write(msg + "\n")
+
+
+async def load_or_prompt_config():
+    config = load_json()
+    if not all(k in config for k in ("api_id", "api_hash", "phone")):
+        print("🔧 Enter your Telegram API config:")
+        config["api_id"] = int(input("API ID: "))
+        config["api_hash"] = input("API Hash: ")
+        config["phone"] = input("Phone number (with +91...): ")
+        save_json(config)
+
+    client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
+    await client.start(phone=config["phone"])
+
+    change_all = input("🔧 Do you want to change config? (y/n): ").lower()
+    if change_all == "y":
+        print("👉 Full config edit selected.")
+        config["api_id"] = int(input("API ID: "))
+        config["api_hash"] = input("API Hash: ")
+        config["phone"] = input("Phone number (with +91...): ")
+        save_json(config)
+
+    change_channels = input("🌀 Do you want to change source and target channels? (y/n): ").lower()
+    if change_channels == "y":
+        config = await update_config_interactively(client)
+
+    return config, client
+
