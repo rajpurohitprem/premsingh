@@ -46,7 +46,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     keyboard = [[source_btn], [target_btn]]
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
-    await update.message.reply_text("📌 Please select source and target channels:", reply_markup=markup)
+    
 
 # Handle chat_shared
 async def chat_shared_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
