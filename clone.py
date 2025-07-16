@@ -49,8 +49,16 @@ async def clone_messages():
         return
 
     try:
-        src_entity = await client.get_entity(int(config["source_channel_id"]))
-        tgt_entity = await client.get_entity(int(config["target_channel_id"]))
+        def normalize_channel_id(cid):
+            """
+            Ensures channel ID starts with -100
+            """
+            cid = str(cid)
+            return int(cid) if cid.startswith("-100") else int("-100" + cid)
+
+        src_entity = await client.get_entity(normalize_channel_id(config["source_channel_id"]))
+        tgt_entity = await client.get_entity(normalize_channel_id(config["target_channel_id"]))
+
     except Exception as e:
         print(f"❌ Failed to fetch source/target: {e}")
         return
