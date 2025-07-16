@@ -69,7 +69,7 @@ async def load_or_prompt_config():
         config["phone"] = input("Phone number (with +91...): ")
         save_json(config)
 
-    change_channels = input("🌀 Do you want to change source and target channels? (y/n): ").lower()
+    change_channels = "n"
     if change_channels == "y":
         config = await update_config_interactively(client)
 
