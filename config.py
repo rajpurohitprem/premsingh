@@ -64,7 +64,7 @@ async def load_or_prompt_config():
 
 
         print("👉 Full config edit selected.")
-        print("API ID: 'api_id'"))
+        print("API ID: "api_id"")
         
 
     return config, client
