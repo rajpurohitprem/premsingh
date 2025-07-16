@@ -12,11 +12,11 @@ SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
 
 DEFAULT_CONFIG = {
-    "api_id": 0,
-    "api_hash": "your_api_hash",
-    "phone": "+91xxxxxxxxxx",
-    "source_channel_id": -1001234567890,
-    "target_channel_id": -1009876543210
+    "api_id": ,
+    "api_hash": "",
+    "phone": "",
+    "source_channel_id": ,
+    "target_channel_id": 
 }
 
 def ensure_config_exists():
