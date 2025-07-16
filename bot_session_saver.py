@@ -75,13 +75,14 @@ async def logout_handler(event):
     try:
         await anon.log_out()
         await event.reply("✅ Logged out.")
+    except Exception as e:
+        await event.reply(f"❌ Logout error: {e}")
+        cleanup_journals()
         for ext in [".session", ".session-journal"]:
             file = USER_SESSION
             if os.path.exists(file):
                 os.remove(file)
-    except Exception as e:
-        await event.reply(f"❌ Logout error: {e}")
-        cleanup_journals()
+
 
 import os; os.remove("anon.session_journal") if os.path.exists("anon.session_journal") else None
 import os; os.remove("bot.session_journal") if os.path.exists("bot.session_journal") else None
