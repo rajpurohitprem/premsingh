@@ -62,7 +62,7 @@ async def code_handler(event):
 
         await anon.sign_in(phone, digits)
         await event.reply("✅ Logged in. `anon.session` saved.")
-        cleanup_journals()
+        
     except Exception as e:
         await event.reply(f"❌ Login failed: {e}")
         cleanup_journals()
@@ -75,6 +75,12 @@ async def logout_handler(event):
     try:
         await anon.log_out()
         await event.reply("✅ Logged out.")
+        cleanup_journals()
+        for ext in ["anon.session", "anon.session-journal"]:
+            file = ANON
+            if os.path.exists(file):
+                os.remove(file)
+
     except Exception as e:
         await event.reply(f"❌ Logout error: {e}")
         cleanup_journals()
