@@ -61,8 +61,6 @@ config["api_hash"] = input("API Hash: ")
 config["phone"] = input("Phone number (with +91...): ")
 save_json(config)
 
-config = await update_config_interactively(client)
-return config, client
 
 def log_error(msg):
     with open(ERROR_LOG, "a") as f:
