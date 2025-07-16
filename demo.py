@@ -6,7 +6,7 @@ from telethon.tl.functions.messages import GetHistoryRequest, UpdatePinnedMessag
 from telethon.tl.types import Message
 from tqdm import tqdm
 
-config = "config.json"
+config = "config"
 SESSION_FILE = "anon"
 SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
@@ -20,7 +20,7 @@ DEFAULT_CONFIG = {
 }
 
 async def ensure_config_exists():
-    if not os.path.exists(config.json):
+    if not os.path.exists(config):
         print("🔧 Enter your Telegram API config:")
         config["api_id"] = int(input("API ID: "))
         config["api_hash"] = input("API Hash: ")
