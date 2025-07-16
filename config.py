@@ -63,8 +63,11 @@ async def load_or_prompt_config():
     #await client.start(phone=config["phone"])
 
 
-        print("👉 Full config edit selected.")
-        print("API ID: "api_id"")
+        print("👉 Full config done.")
+        print("📌 Your API ID is:", config["api_id"])
+        print("📌 Your API ID is:", config["api_hash"])
+        print("📌 Your API ID is:", config["api_phone"])
+
         
 
     return config, client
