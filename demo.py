@@ -20,7 +20,7 @@ async def ensure_config_exists():
         config["phone"] = input("Phone number (with +91...): ")
         save_json(config)
 
-def premsingh():
+async def premsingh():
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
 
