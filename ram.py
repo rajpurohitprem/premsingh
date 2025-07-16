@@ -13,14 +13,13 @@ from telegram.ext import (
     filters,
 )
 
-# Load bot token from bot.json
+# Load bot token
 with open("bot.json") as f:
     bot_data = json.load(f)
 BOT_TOKEN = bot_data["bot_token"]
-
 CONFIG_FILE = "config.json"
 
-# Save selected channel ID to config.json
+# Save channel ID
 def save_channel_id(key, chat_id):
     with open(CONFIG_FILE) as f:
         config = json.load(f)
@@ -29,7 +28,7 @@ def save_channel_id(key, chat_id):
         json.dump(config, f, indent=2)
     print(f"✅ Saved {key}: {chat_id}")
 
-# /start command: send buttons to share channels
+# /start handler
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     source_btn = KeyboardButton(
         text="Select Source Channel",
@@ -49,10 +48,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
     await update.message.reply_text("📌 Please select source and target channels:", reply_markup=markup)
 
-# Handle shared channel from chat_shared
+# Handle chat_shared
 async def chat_shared_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message or not update.message.chat_shared:
-        return  # Not a chat_shared message
+        return
 
     shared = update.message.chat_shared
     chat_id = shared.chat_id
@@ -66,14 +65,12 @@ async def chat_shared_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
     else:
         await update.message.reply_text("⚠️ Unknown request ID received.")
 
-# Main entry point
-async def main():
+# Main (SYNC, not async!)
+def main():
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.ALL, chat_shared_handler))
-    await app.run_polling()
+    app.run_polling()  # <--- ✅ synchronous version
 
-# Run bot
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
+    main()
