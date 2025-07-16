@@ -30,6 +30,7 @@ async def ensure_config_exists():
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
 
+else:
     change_all = input("🔧 Do you want to change config? (y/n): ").lower()
     if change_all == "y":
         print("👉 Full config edit selected.")
