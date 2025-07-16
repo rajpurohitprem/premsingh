@@ -4,7 +4,7 @@ import glob
 import os
 
 def cleanup_journals():
-    for file in glob.glob("*.session*journal"):
+    for file in glob.glob("*journal"):
         try:
             os.remove(file)
         except Exception as e:
