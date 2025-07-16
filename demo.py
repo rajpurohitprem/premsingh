@@ -15,8 +15,8 @@ DEFAULT_CONFIG = {
     "api_id": '',
     "api_hash": "",
     "phone": "",
-    "source_channel_id": ,
-    "target_channel_id": 
+    "source_channel_id": '',
+    "target_channel_id":'' 
 }
 
 def ensure_config_exists():
