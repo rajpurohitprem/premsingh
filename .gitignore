@@ -10,7 +10,6 @@ venv/
 .env
 
 # Session & config files (important for Telegram login & privacy)
-bot.json
 anon.session
 bot.session
 config.json
