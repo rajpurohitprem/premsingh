@@ -24,3 +24,45 @@ Thumbs.db
 # Log or temporary files
 *.log
 *.tmp
+
+
+
+# === Python Cache ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# === Session Files ===
+*.session
+*.session-journal
+journal/
+anon.session*
+bot.session*
+
+# === Node.js ===
+node_modules/
+npm-debug.log
+package-lock.json
+
+# === VS Code ===
+.vscode/
+
+# === Termux ===
+termux.properties
+
+# === Logs and Output ===
+*.log
+*.db
+*.sqlite
+*.bak
+*.tmp
+
+# === Config / Secrets ===
+bot.json
+config.json
+*.env
+
+# === Misc ===
+.DS_Store
+*.swp
