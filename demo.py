@@ -11,13 +11,6 @@ SESSION_FILE = "anon"
 SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
 
-DEFAULT_CONFIG = {
-    "api_id": '',
-    "api_hash": "",
-    "phone": "",
-    "source_channel_id": '',
-    "target_channel_id":'' 
-}
 
 async def ensure_config_exists():
     if not os.path.exists(config):
@@ -27,10 +20,11 @@ async def ensure_config_exists():
         config["phone"] = input("Phone number (with +91...): ")
         save_json(config)
 
+def premsingh():
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
 
-    else:
+    
     change_all = input("🔧 Do you want to change config? (y/n): ").lower()
     if change_all == "y":
         print("👉 Full config edit selected.")
