@@ -70,7 +70,7 @@ async def load_or_prompt_config():
 
         
 
-    return config, client
+    return config
 
 def log_error(msg):
     with open(ERROR_LOG, "a") as f:
