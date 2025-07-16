@@ -65,8 +65,8 @@ async def load_or_prompt_config():
 
         print("👉 Full config done.")
         print("📌 Your API ID is:", config["api_id"])
-        print("📌 Your API ID is:", config["api_hash"])
-        print("📌 Your API ID is:", config["phone"])
+        print("📌 Your API Hash is:", config["api_hash"])
+        print("📌 Your API Phone is:", config["phone"])
 
         
 
