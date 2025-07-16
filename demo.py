@@ -61,9 +61,9 @@ config["api_hash"] = input("API Hash: ")
 config["phone"] = input("Phone number (with +91...): ")
 save_json(config)
 
-    change_channels =="y"
-    if change_channels == "y":
-        config = await update_config_interactively(client)
+change_channels == "y"
+if change_channels == "y":
+    config = await update_config_interactively(client)
 
     return config, client
 
