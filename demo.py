@@ -11,6 +11,10 @@ SESSION_FILE = "anon"
 SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
 
+# Ensure logs exist
+open(SENT_LOG, "a").close()
+open(ERROR_LOG, "a").close()
+
 
 def load_json():
     with open(config, "r") as f:
