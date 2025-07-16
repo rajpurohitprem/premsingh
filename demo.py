@@ -41,7 +41,7 @@ def log_error(msg):
 
 async def load_or_prompt_config():
     config = load_json()
-    if not all(k in config for k in ("api_id", "api_hash", "phone")):
+    if all(k in config for k in ("api_id", "api_hash", "phone")):
         print("🔧 Enter your Telegram API config:")
         config["api_id"] = int(input("API ID: "))
         config["api_hash"] = input("API Hash: ")
