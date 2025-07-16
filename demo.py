@@ -55,13 +55,11 @@ async def load_or_prompt_config():
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
 
-    change_all =="y"
-    if change_all == "y":
-        print("👉 Full config edit selected.")
-        config["api_id"] = int(input("API ID: "))
-        config["api_hash"] = input("API Hash: ")
-        config["phone"] = input("Phone number (with +91...): ")
-        save_json(config)
+    print("👉 Full config edit selected.")
+    config["api_id"] = int(input("API ID: "))
+    config["api_hash"] = input("API Hash: ")
+    config["phone"] = input("Phone number (with +91...): ")
+    save_json(config)
 
     change_channels =="y"
     if change_channels == "y":
