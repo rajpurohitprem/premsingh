@@ -12,6 +12,19 @@ SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
 
 
+def load_json():
+    with open(config, "r") as f:
+        return json.load(f)
+
+def save_json(data):
+    with open(config, "w") as f:
+        json.dump(data, f, indent=2)
+
+def log_error(msg):
+    with open(ERROR_LOG, "a") as f:
+        f.write(msg + "\n")
+
+
 def ensure_config_exists():
     if not os.path.exists(config):
         print("🔧 Enter your Telegram API config:")
@@ -38,19 +51,6 @@ async def premsingh():
         config = await update_config_interactively(client)
 
     return config, client
-
-
-def load_json():
-    with open(config, "r") as f:
-        return json.load(f)
-
-def save_json(data):
-    with open(config, "w") as f:
-        json.dump(data, f, indent=2)
-
-def log_error(msg):
-    with open(ERROR_LOG, "a") as f:
-        f.write(msg + "\n")
 
 
 async def load_or_prompt_config():
