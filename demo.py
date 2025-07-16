@@ -6,7 +6,7 @@ from telethon.tl.functions.messages import GetHistoryRequest, UpdatePinnedMessag
 from telethon.tl.types import Message
 from tqdm import tqdm
 
-CONFIG_FILE = "config.json"
+config = "config.json"
 SESSION_FILE = "anon"
 SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
@@ -20,18 +20,37 @@ DEFAULT_CONFIG = {
 }
 
 def ensure_config_exists():
-    if not os.path.exists(config.json):
-        print("⚙️ config.json not found. Creating default one...")
-        with open(config.json, "w") as f:
-            json.dump(config.json, f, indent=2)
-        print("⚠️ Please edit 'config.json' and fill in your API credentials and channel IDs.")
+    if not os.path.exists(config.json):=
+        print("🔧 Enter your Telegram API config:")
+        config["api_id"] = int(input("API ID: "))
+        config["api_hash"] = input("API Hash: ")
+        config["phone"] = input("Phone number (with +91...): ")
+        save_json(config)
+
+    client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
+    await client.start(phone=config["phone"])
+
+    change_all = input("🔧 Do you want to change config? (y/n): ").lower()
+    if change_all == "y":
+        print("👉 Full config edit selected.")
+        config["api_id"] = int(input("API ID: "))
+        config["api_hash"] = input("API Hash: ")
+        config["phone"] = input("Phone number (with +91...): ")
+        save_json(config)
+
+    change_channels = input("🌀 Do you want to change source and target channels? (y/n): ").lower()
+    if change_channels == "y":
+        config = await update_config_interactively(client)
+
+    return config, client
+
 
 def load_json():
-    with open(CONFIG_FILE, "r") as f:
+    with open(config, "r") as f:
         return json.load(f)
 
 def save_json(data):
-    with open(CONFIG_FILE, "w") as f:
+    with open(config, "w") as f:
         json.dump(data, f, indent=2)
 
 def log_error(msg):
