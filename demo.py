@@ -1,3 +1,19 @@
+import os
+import json
+import asyncio
+from telethon import TelegramClient, errors
+from telethon.tl.functions.messages import GetHistoryRequest, UpdatePinnedMessageRequest
+from telethon.tl.types import MessageService, Message
+from tqdm import tqdm
+
+CONFIG_FILE = "config.json"
+SESSION_FILE = "anon"
+SENT_LOG = "sent_ids.txt"
+ERROR_LOG = "errors.txt"
+
+# Ensure logs exist
+open(SENT_LOG, "a").close()
+open(ERROR_LOG, "a").close()
 
 def load_json():
     if os.path.exists(CONFIG_FILE):
@@ -39,7 +55,7 @@ async def load_or_prompt_config():
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
 
-    change_all = input("🔧 Do you want to change config? (y/n): ").lower()
+    change_all =="y"
     if change_all == "y":
         print("👉 Full config edit selected.")
         config["api_id"] = int(input("API ID: "))
@@ -47,7 +63,7 @@ async def load_or_prompt_config():
         config["phone"] = input("Phone number (with +91...): ")
         save_json(config)
 
-    change_channels = input("🌀 Do you want to change source and target channels? (y/n): ").lower()
+    change_channels =="y"
     if change_channels == "y":
         config = await update_config_interactively(client)
 
