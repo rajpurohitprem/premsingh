@@ -52,7 +52,8 @@ async def update_config_interactively(client):
 async def load_or_prompt_config():
     config = load_json()
  
-
+    client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
+    await client.start(phone=config["phone"])
  
 
     change_channels = "y"
