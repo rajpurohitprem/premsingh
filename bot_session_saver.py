@@ -75,7 +75,13 @@ async def logout_handler(event):
     try:
         await anon.log_out()
         await event.reply("✅ Logged out.")
-        cleanup_journals()
+        for ext in [".session", ".session-journal"]:
+            file = USER_SESSION
+            File1 = BOT_SESSION
+            if os.path.exists(file):
+                os.remove(file)
+            if os.path.exists(file1):
+                os.remove(file1)
     except Exception as e:
         await event.reply(f"❌ Logout error: {e}")
         cleanup_journals()
