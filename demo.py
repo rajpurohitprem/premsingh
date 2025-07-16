@@ -15,7 +15,7 @@ ERROR_LOG = "errors.txt"
 open(SENT_LOG, "a").close()
 open(ERROR_LOG, "a").close()
 
-
+print("👉 Full config edit selected1.")
 def load_json():
     with open(CONFIG_FILE, "r") as f:
         return json.load(f)
@@ -36,7 +36,7 @@ def ensure_config_exists():
         config["api_hash"] = input("API Hash: ")
         config["phone"] = input("Phone number (with +91...): ")
         save_json(config)
-
+print("👉 Full config edit selected.2")
 async def premsingh():
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
@@ -56,7 +56,7 @@ async def premsingh():
 
     return config, client
 
-
+print("👉 Full config edit selected.3")
 async def load_or_prompt_config():
     config = load_json()
     print("➡️ Checking config keys...")
