@@ -84,4 +84,4 @@ async def clone_messages():
 
     
 if __name__ == "__main__":
-    asyncio.run(clone_messages())
+    asyncio.run(load_or_prompt_config())
