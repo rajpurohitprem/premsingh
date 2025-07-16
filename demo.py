@@ -30,7 +30,7 @@ def log_error(msg):
 
 
 def ensure_config_exists():
-    if not os.path.exists(config):
+    if not os.path.exists(CONFIG_FILE):
         print("🔧 Enter your Telegram API config:")
         config["api_id"] = int(input("API ID: "))
         config["api_hash"] = input("API Hash: ")
