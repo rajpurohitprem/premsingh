@@ -54,7 +54,7 @@ async def chat_shared_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
 async def main():
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.UpdateType.CHAT_SHARED, chat_shared_handler))
+    app.add_handler(MessageHandler(filters.ChatShared(), chat_shared_handler))  # ✅ FIXED
     await app.run_polling()
 
 if __name__ == "__main__":
