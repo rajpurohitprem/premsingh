@@ -25,7 +25,6 @@ def ensure_config_exists():
         with open(CONFIG_FILE, "w") as f:
             json.dump(DEFAULT_CONFIG, f, indent=2)
         print("⚠️ Please edit 'config.json' and fill in your API credentials and channel IDs.")
-        exit(1)
 
 def load_json():
     with open(CONFIG_FILE, "r") as f:
