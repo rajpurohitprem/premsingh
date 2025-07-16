@@ -3,7 +3,7 @@ import json
 import asyncio
 from telethon import TelegramClient, errors
 from telethon.tl.functions.messages import GetHistoryRequest, UpdatePinnedMessageRequest
-from telethon.tl.types import MessageService, Message
+from telethon.tl.types import Message
 from tqdm import tqdm
 
 CONFIG_FILE = "config.json"
@@ -27,13 +27,7 @@ def ensure_config_exists():
         print("⚠️ Please edit 'config.json' and fill in your API credentials and channel IDs.")
         exit(1)
 
-# Ensure logs exist
-open(SENT_LOG, "a").close()
-open(ERROR_LOG, "a").close()
-
 def load_json():
-    if not os.path.exists(CONFIG_FILE):
-        raise FileNotFoundError("❌ config.json not found. Please create it with api_id, api_hash, phone, source_channel_id, target_channel_id.")
     with open(CONFIG_FILE, "r") as f:
         return json.load(f)
 
@@ -49,8 +43,8 @@ async def main():
     config = load_json()
     required_keys = ["api_id", "api_hash", "phone", "source_channel_id", "target_channel_id"]
     for key in required_keys:
-        if key not in config:
-            raise KeyError(f"❌ Missing '{key}' in config.json. Please fill it manually before running.")
+        if key not in config or not config[key]:
+            raise KeyError(f"❌ Missing or invalid '{key}' in config.json. Please fill it correctly.")
 
     client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     await client.start(phone=config["phone"])
@@ -58,10 +52,16 @@ async def main():
     source = await client.get_entity(config["source_channel_id"])
     target = await client.get_entity(config["target_channel_id"])
 
+    open(SENT_LOG, "a").close()
+    open(ERROR_LOG, "a").close()
+
     sent_ids = set()
     with open(SENT_LOG, "r") as f:
         for line in f:
-            sent_ids.add(int(line.strip()))
+            try:
+                sent_ids.add(int(line.strip()))
+            except:
+                continue
 
     total = 0
     all_msgs = []
@@ -92,8 +92,39 @@ async def main():
     for msg in tqdm(all_msgs, desc="📤 Copying Messages", unit="msg"):
         try:
             if msg.media:
-                file_path = await client.download_media(msg, file=bytes, progress_callback=lambda c, t: tqdm.update(c))
-                sent = await client.send_file(target, file_path, caption=msg.message or "", reply_to=None, progress_callback=lambda c, t: tqdm.update(c))
+                # Progress bars for media download/upload
+                downloaded = []
+
+                def download_cb(current, total):
+                    if not downloaded:
+                        downloaded.append(tqdm(total=total, desc="⬇️ Downloading", unit="B", unit_scale=True))
+                    downloaded[0].n = current
+                    downloaded[0].refresh()
+
+                media = await client.download_media(msg, file=bytes, progress_callback=download_cb)
+
+                if downloaded:
+                    downloaded[0].close()
+
+                uploaded = []
+
+                def upload_cb(current, total):
+                    if not uploaded:
+                        uploaded.append(tqdm(total=total, desc="⬆️ Uploading", unit="B", unit_scale=True))
+                    uploaded[0].n = current
+                    uploaded[0].refresh()
+
+                sent = await client.send_file(
+                    target,
+                    media,
+                    caption=msg.message or "",
+                    reply_to=None,
+                    progress_callback=upload_cb
+                )
+
+                if uploaded:
+                    uploaded[0].close()
+
             else:
                 sent = await client.send_message(target, msg.text or "", reply_to=None)
 
@@ -111,4 +142,3 @@ async def main():
 if __name__ == "__main__":
     ensure_config_exists()
     asyncio.run(main())
-
