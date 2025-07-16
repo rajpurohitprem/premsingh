@@ -19,7 +19,7 @@ DEFAULT_CONFIG = {
     "target_channel_id":'' 
 }
 
-def ensure_config_exists():
+async def ensure_config_exists():
     if not os.path.exists(config.json):
         print("🔧 Enter your Telegram API config:")
         config["api_id"] = int(input("API ID: "))
