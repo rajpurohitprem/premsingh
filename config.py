@@ -51,7 +51,8 @@ async def update_config_interactively(client):
 
 async def load_or_prompt_config():
     config = load_json()
-    if not all(k in config for k in ("api_id", "api_hash", "phone")):
+    change_all = "y"
+    if change_all == "y":
         print("🔧 Enter your Telegram API config:")
         config["api_id"] = int(input("API ID: "))
         config["api_hash"] = input("API Hash: ")
@@ -61,17 +62,10 @@ async def load_or_prompt_config():
     #client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
     #await client.start(phone=config["phone"])
 
-    change_all = "y"
-    if change_all == "y":
-        print("👉 Full config edit selected.")
-        config["api_id"] = int(input("API ID: "))
-        config["api_hash"] = input("API Hash: ")
-        config["phone"] = input("Phone number (with +91...): ")
-        save_json(config)
 
-    change_channels = "n"
-    if change_channels == "y":
-        config = await update_config_interactively(client)
+        print("👉 Full config edit selected.")
+        print("API ID: 'api_id'"))
+        
 
     return config, client
 
