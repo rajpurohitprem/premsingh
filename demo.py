@@ -6,7 +6,7 @@ from telethon.tl.functions.messages import GetHistoryRequest, UpdatePinnedMessag
 from telethon.tl.types import Message
 from tqdm import tqdm
 
-config = "config"
+CONFIG_FILE = "config"
 SESSION_FILE = "anon"
 SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
@@ -17,11 +17,11 @@ open(ERROR_LOG, "a").close()
 
 
 def load_json():
-    with open(config, "r") as f:
+    with open(CONFIG_FILE, "r") as f:
         return json.load(f)
 
 def save_json(data):
-    with open(config, "w") as f:
+    with open(CONFIG_FILE, "w") as f:
         json.dump(data, f, indent=2)
 
 def log_error(msg):
