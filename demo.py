@@ -12,7 +12,7 @@ SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
 
 DEFAULT_CONFIG = {
-    "api_id": ,
+    "api_id": '',
     "api_hash": "",
     "phone": "",
     "source_channel_id": ,
