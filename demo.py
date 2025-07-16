@@ -12,7 +12,7 @@ SENT_LOG = "sent_ids.txt"
 ERROR_LOG = "errors.txt"
 
 
-async def ensure_config_exists():
+def ensure_config_exists():
     if not os.path.exists(config):
         print("🔧 Enter your Telegram API config:")
         config["api_id"] = int(input("API ID: "))
