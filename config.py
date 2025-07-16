@@ -59,8 +59,8 @@ async def load_or_prompt_config():
         config["phone"] = input("Phone number (with +91...): ")
         save_json(config)
 
-    #client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
-    #await client.start(phone=config["phone"])
+    client = TelegramClient(SESSION_FILE, config["api_id"], config["api_hash"])
+    await client.start(phone=config["phone"])
 
 
         print("👉 Full config done.")
