@@ -63,7 +63,7 @@ save_json(config)
 
 change_channels == "y"
 if change_channels == "y":
-    config = await update_config_interactively(client)
+config = await update_config_interactively(client)
 
     return config, client
 
