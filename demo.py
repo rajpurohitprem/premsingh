@@ -41,6 +41,7 @@ def log_error(msg):
 
 async def load_or_prompt_config():
     config = load_json()
+    print("➡️ Checking config keys...")
     if all(k in config for k in ("api_id", "api_hash", "phone")):
         print("✅ All required keys exist.")
     else:
