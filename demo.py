@@ -20,10 +20,10 @@ DEFAULT_CONFIG = {
 }
 
 def ensure_config_exists():
-    if not os.path.exists(CONFIG_FILE):
+    if not os.path.exists(config.json):
         print("⚙️ config.json not found. Creating default one...")
-        with open(CONFIG_FILE, "w") as f:
-            json.dump(DEFAULT_CONFIG, f, indent=2)
+        with open(config.json, "w") as f:
+            json.dump(config.json, f, indent=2)
         print("⚠️ Please edit 'config.json' and fill in your API credentials and channel IDs.")
 
 def load_json():
