@@ -1,3 +1,33 @@
+import json
+import subprocess
+from telethon import TelegramClient, events
+
+# Load config from JSON
+def load_json(file):
+    with open(file, "r") as f:
+        return json.load(f)
+
+def save_json(file, data):
+    with open(file, "w") as f:
+        json.dump(data, f, indent=2)
+
+# Load bot config and Telegram API credentials
+bot_config = load_json("bot.json")  # Must contain 'bot_token' and 'allowed_users'
+main_config = load_json("config.json")  # Will be updated with source/target
+
+# Your Telegram API ID and HASH (should already be in config.json)
+api_id = main_config["api_id"]
+api_hash = main_config["api_hash"]
+bot_token = bot_config["bot_token"]
+allowed_users = bot_config.get("allowed_users", [])
+
+# Start the bot
+bot = TelegramClient("bot_session", api_id, api_hash).start(bot_token=bot_token)
+
+# Access check
+def is_authorized(event):
+    return event.sender_id in allowed_users
+
 @bot.on(events.NewMessage)
 async def handler(event):
     if not is_authorized(event):
@@ -66,3 +96,8 @@ async def handler(event):
             "_Only authorized users can use these commands._",
             parse_mode="markdown"
         )
+
+
+# Run bot
+print("🤖 Bot is running...")
+bot.run_until_disconnected() 
