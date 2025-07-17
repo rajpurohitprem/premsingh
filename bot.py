@@ -1,34 +1,3 @@
-import json
-import subprocess
-from telethon import TelegramClient, events
-
-# Load config from JSON
-def load_json(file):
-    with open(file, "r") as f:
-        return json.load(f)
-
-def save_json(file, data):
-    with open(file, "w") as f:
-        json.dump(data, f, indent=2)
-
-# Load bot config and Telegram API credentials
-bot_config = load_json("bot.json")  # Must contain 'bot_token' and 'allowed_users'
-main_config = load_json("config.json")  # Will be updated with source/target
-
-# Your Telegram API ID and HASH (should already be in config.json)
-api_id = main_config["api_id"]
-api_hash = main_config["api_hash"]
-bot_token = bot_config["bot_token"]
-allowed_users = bot_config.get("allowed_users", [])
-
-# Start the bot
-bot = TelegramClient("bot_session", api_id, api_hash).start(bot_token=bot_token)
-
-# Access check
-def is_authorized(event):
-    return event.sender_id in allowed_users
-
-# Handle messages
 @bot.on(events.NewMessage)
 async def handler(event):
     if not is_authorized(event):
@@ -37,8 +6,28 @@ async def handler(event):
 
     message = event.raw_text.strip()
 
+    # Update API ID
+    if message.startswith("/api"):
+        try:
+            new_api_id = int(message.split(" ")[1])
+            main_config["api_id"] = new_api_id
+            save_json("config.json", main_config)
+            await event.reply(f"✅ API ID updated to `{new_api_id}`")
+        except Exception as e:
+            await event.reply(f"⚠️ Failed to update API ID: {str(e)}")
+
+    # Update API Hash
+    elif message.startswith("/hash"):
+        try:
+            new_api_hash = message.split(" ")[1]
+            main_config["api_hash"] = new_api_hash
+            save_json("config.json", main_config)
+            await event.reply(f"✅ API Hash updated to `{new_api_hash}`")
+        except Exception as e:
+            await event.reply(f"⚠️ Failed to update API Hash: {str(e)}")
+
     # Set Source Channel ID
-    if message.startswith("/set_source"):
+    elif message.startswith("/set_source"):
         try:
             source_id = message.split(" ")[1].replace("-100", "")
             main_config["source_channel_id"] = int(source_id)
@@ -69,13 +58,11 @@ async def handler(event):
     elif message.startswith("/start") or message.startswith("/help"):
         await event.reply(
             "🤖 *Telegram Clone Bot*\n\n"
+            "/api `<new_api_id>` – Update API ID\n"
+            "/hash `<new_api_hash>` – Update API Hash\n"
             "/set_source `-100xxxxxxxxx`\n"
             "/set_target `-100yyyyyyyyy`\n"
             "/run_clone – Run the cloner script\n\n"
             "_Only authorized users can use these commands._",
             parse_mode="markdown"
         )
-
-# Run bot
-print("🤖 Bot is running...")
-bot.run_until_disconnected()
