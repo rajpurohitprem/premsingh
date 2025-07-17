@@ -1,26 +1,45 @@
 import json
+import os
 
-# Prompt for bot token
-bot_token = input("Enter your bot token: ")
+# File path
+config_file = "bot.json"
 
-# Prompt for allowed user IDs (comma-separated)
-user_input = input("Enter allowed user IDs (comma-separated): ")
+# Load existing config if it exists
+if os.path.exists(config_file):
+    with open(config_file, "r") as f:
+        try:
+            config = json.load(f)
+            print("🔄 Existing configuration loaded.")
+        except json.JSONDecodeError:
+            print("⚠️ Existing bot.json is invalid. Starting fresh.")
+            config = {}
+else:
+    config = {}
 
-# Convert string input to list of integers
+# Prompt for bot token (default to existing)
+existing_token = config.get("bot_token", "")
+bot_token = input(f"Enter bot token [{existing_token}]: ").strip()
+if not bot_token:
+    bot_token = existing_token
+
+# Prompt for allowed user IDs (append to existing if present)
+existing_users = set(config.get("allowed_users", []))
+user_input = input("Enter allowed user IDs to add (comma-separated): ").strip()
 try:
-    allowed_users = [int(uid.strip()) for uid in user_input.split(',') if uid.strip()]
+    new_users = {int(uid.strip()) for uid in user_input.split(",") if uid.strip()}
 except ValueError:
-    print("Invalid input. Please enter numeric user IDs separated by commas.")
+    print("❌ Invalid user ID(s). Must be numeric.")
     exit(1)
 
-# Create config dictionary
-config = {
-    "bot_token": bot_token,
-    "allowed_users": allowed_users
-}
+# Merge users
+allowed_users = sorted(existing_users.union(new_users))
 
-# Save to bot.json
-with open("bot.json", "w") as f:
+# Update config
+config["bot_token"] = bot_token
+config["allowed_users"] = allowed_users
+
+# Save updated config
+with open(config_file, "w") as f:
     json.dump(config, f, indent=2)
 
-print("✅ bot.json file created successfully!")
+print("✅ bot.json updated successfully.")
