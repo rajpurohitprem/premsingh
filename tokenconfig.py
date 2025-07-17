@@ -3,7 +3,10 @@ import os
 
 # File path
 config_file = "bot.json"
-
+# Delete existing bot.json if it exists
+if os.path.exists("bot.json"):
+    os.remove("bot.json")
+    print("🗑️ Removed existing bot.json.")
 # Load existing config if it exists
 if os.path.exists(config_file):
     with open(config_file, "r") as f:
